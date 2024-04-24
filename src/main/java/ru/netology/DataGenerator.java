@@ -1,47 +1,62 @@
 package ru.netology;
 
 import com.github.javafaker.Faker;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-@Data
-@NoArgsConstructor
 public class DataGenerator {
 
-    public static <T> T getRandom(List<T> list)
-    {
+    private DataGenerator() {
+    }
+
+
+    public static String generateDate(int shift) {
+        String date = LocalDate.now().plusDays(shift).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        return date;
+    }
+
+    public static String generateCity(String locale) {
+        String[] city = {"Томск", "Абакан", "Казань", "Новосибирск", "Севастополь", "Нижний Новгород", "Челябинск", "Екатеринбург", "Йошкар-Ола"};
         Random random = new Random();
-        return list.get(random.nextInt(list.size()));
+        int i = random.nextInt(city.length);
+
+        return city[i];
     }
 
-    public static String getRandomCity() {
-        List<String> list = Arrays.asList("Волгоград", "Брянск", "Москва", "Астрахань");
-        return getRandom(list);
-    }
-
-    public static String getRandomCityInvalid() {
-        List<String> list = Arrays.asList("Камышин", "Волжский", "Балашиха", "Капустин Яр");
-        return getRandom(list);
-    }
-
-    public static String getDate(int day) {
-        return LocalDate.now().plusDays(day).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-    }
-
-    public static String getFakerName() {
+    public static String generateName(String locale) {
         Faker faker = new Faker(new Locale("ru"));
-        return faker.name().firstName() + " " + faker.name().lastName();
+        String name = faker.name().firstName() + " " + faker.name().lastName();
+        return name;
     }
 
-    public static String getFakerPhone() {
+    public static String generatePhone(String locale) {
         Faker faker = new Faker(new Locale("ru"));
-        return faker.phoneNumber().phoneNumber();
+        String phone = faker.phoneNumber().phoneNumber();
+        return phone;
     }
+
+    public static class Registration {
+        private Registration() {
+        }
+
+        public static UserInfo generateUser(String locale) {
+            UserInfo user = new UserInfo(generateCity("ru"), generateName("ru"), generatePhone("ru"));
+
+            return user;
+        }
+    }
+
+    @Value
+    public static class UserInfo {
+        String city;
+        String name;
+        String phone;
+    }
+
+
+
 }
