@@ -10,7 +10,7 @@ build: off
 
 install:
 
-  - java -jar ./artifacts/app-card-delivery.jar -port=7040 &
+  - java -jar ./artifacts/app-replan-delivery.jar -port=9999 &
 
 build_script:
   - chmod +x gradlew
